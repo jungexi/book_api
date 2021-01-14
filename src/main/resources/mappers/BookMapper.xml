@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.feihu.api.dao.BookDao">
+    <select id="queryBookCount" parameterType="com.feihu.api.model.vo.BookParamsVO" resultType="java.lang.Integer">
+      select count(*) from t_book where 4=4
+      <if test="name!=null and name!=''">
+          and name=#{name}
+      </if>
+     <if test="bdate!=null">
+          and createdate>=#{bdate}
+      </if>
+     <if test="ddate!=null">
+      <!-- <![CDATA[   ]]>  mybatis 的转义处理      &quot; "   &amp; &  &lt; <  &gt; >  &nbsp; 空格 -->
+          and createdate&lt;=#{ddate}
+      </if>
+
+        <if test="ps!=null">
+            <foreach collection="ps" item="ps" >
+                and peoples like '%${ps}%'
+            </foreach>
+        </if>
+    </select>
+<!--   0 1 2 3 4 5 6 7 8 9         页数是从1开始    -->
+    <select id="queryBookDataByParams" parameterType="com.feihu.api.model.vo.BookParamsVO" resultType="com.feihu.api.model.po.Book">
+        select * from t_book where 3=3
+        <if test="name!=null and name!=''">
+            and name=#{name}
+        </if>
+        <if test="bdate!=null">
+            and createdate>=#{bdate}
+        </if>
+        <if test="ddate!=null">
+            <!-- <![CDATA[   ]]>  mybatis 的转义处理      &quot; "   &amp; &  &lt; <  &gt; >  &nbsp; 空格 -->
+            and createdate&lt;=#{ddate}
+        </if>
+
+        <if test="ps!=null">
+            <foreach collection="ps" item="ps" >
+                and peoples like '%${ps}%'
+            </foreach>
+        </if>
+
+
+
+        limit ${size*(currPage-1)},#{size}
+
+    </select>
+</mapper>
